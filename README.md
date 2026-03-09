@@ -107,12 +107,58 @@ GND is the ground pin.
 
 
 ## STM 32 CUBE PROGRAM :
+```
+#include "main.h"
+#include "stdio.h"
 
+#if defined(__GNUC__)
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#endif
+uint32_t readvalue;
+
+
+int main(void)
+{
+
+  
+  HAL_Init();
+
+  SystemClock_Config();
+
+
+  MX_GPIO_Init();
+  MX_ADC_Init();
+  MX_USART2_UART_Init();
+
+  
+  while (1)
+  {
+	  HAL_ADC_Start(&hadc);
+	  HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+	  readvalue = HAL_ADC_GetValue(&hadc);
+	  printf("Read value : %ld\n", readvalue);
+	  uint32_t soilmoist = 100 - (readvalue / 40.95);
+	  printf("Soil moisture : %ld %%\n", soilmoist);
+	  HAL_Delay(1000);
+
+	    }
+
+	  }
+	  PUTCHAR_PROTOTYPE
+	  {
+	  	HAL_UART_Transmit(&huart2,(uint8_t*)&ch,1,0xFFFF);
+	  	return ch;
+	  }
+```
 
 
 ## Output screen shots on serial monitor   :
- 
- 
+ <img width="1920" height="1200" alt="Screenshot (53)" src="https://github.com/user-attachments/assets/1c030ccd-a381-4eb0-889b-d7108826ece0" />
+
+## Circuit board :
+
+![WhatsApp Image 2026-03-09 at 7 49 13 PM](https://github.com/user-attachments/assets/8e09e2df-b17b-42d4-87ec-77a7dde01205)
+
  
  
 ## Result :
